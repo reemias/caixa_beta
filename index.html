@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produtos e Medicamentos</title> 
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .historico-entry {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .historico-entry p {
+            margin: 0;
+        }
+        .result-box {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .navigation-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        body, html {
+            height: 100%;
+            margin: 0;
+            width: 100%;
+            display: flex;
+            font-family: 'Roboto', sans-serif;
+            background: #F0F0F0;
+            color: #333;
+        }
+
+        .header-full {
+            background: linear-gradient(to bottom, #2c3e50, #4ca1af);
+            color: white;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 70%;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .product-registration, .payment-section {
+            margin-bottom: 20px;
+        }
+
+        .main-full {
+            background: linear-gradient(to bottom, #2c3e50, #4ca1af);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            width: 30%;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin: 50px;
+        }
+
+        .card {
+            width: 100%;
+            height: 40%;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        .card-body {
+            background-color: #2c2c36;
+            border: 1px solid #DDD;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            overflow: auto;
+        }
+
+        .historico {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            border: 1px solid #DDD;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto;
+        }
+
+        .historico-entry {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #F9F9F9;
+            border: 1px solid #DDD;
+            border-radius: 5px;
+        }
+
+        input, select, button {
+            margin-top: 10px;
+            background-color: #FFF;
+            border: 1px solid #DDD;
+            color: #333;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 1em;
+            width: 100%;
+        }
+
+        input:focus, select:focus, button:focus {
+            outline: none;
+            border-color: #999;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #FFF;
+            border: 1px solid #DDD;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .result-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+            color: #000000;
+        }
+
+        .result-content p {
+            margin: 5px 0;
+        }
+
+        .historico-3 {
+            padding: 20px;
+            background-color: #f2f2f28a;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            height: 90vh;
+            width: 100%;
+        }
+
+        .btn_excluir {
+            width: 100px;
+            background-color: red;
+            color: white;
+        }
+
+        .resultado_pesquisa {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .vermelho {
+            background-color: #ffcccc;
+        }
+
+        .azul {
+            background-color: #cce5ff;
+        }
+
+        .verde {
+            background-color: #d4edda;
+        }
+
+        .historico_corpo {
+            background-color: #030303;
+            color: white;
+        }
+
+        @media (max-width: 550px) {
+            .box_historico_dados thead {
+                display: none;
+            }
+
+            .box_historico_dados tbody tr {
+                display: flex;
+                flex-direction: column;
+                border: 1px solid #ccc;
+                margin-bottom: 10px;
+            }
+
+            .box_historico_dados tbody tr td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 0;
+            }
+
+            .box_historico_dados tbody tr td::before {
+                content: attr(data-title);
+                flex: 1;
+                font-weight: bold;
+                padding-right: 10px;
+            }
+        }
+
+        .caixa-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            max-height: 700px;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .caixa-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .produto-info {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .produto-nao-cadastrado {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-dark text-white text-center py-4">
+        <h1>ESTOQUE DE PRODUTOS E MEDICAMENTOS</h1>
+    </header>
+
+    <!-- Menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Menu</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#caixa" onclick="abrirCaixa()">Caixa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://reemias.github.io/historico/">histórico de serviços</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://reemias.github.io/trabalho/">Suporte T.I</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="cadastro_produto mb-4 p-3 bg-white rounded shadow-sm">
+            <div class="form-row">
+                <div class="col">
+                    <input type="text" id="nome_produto" class="form-control mb-2" placeholder="Nome do Produto/Medicamento">
+                </div>
+                <div class="col">
+                    <input type="text" id="codigo_barras" class="form-control mb-2" placeholder="Código de Barras">
+                </div>
+            </div>
+        </div>
+        <div class="box_produto mb-4 p-3 bg-white rounded shadow-sm">
+            <div class="form-row">
+                <div class="col">
+                    <input type="text" id="categoria" class="form-control mb-2" placeholder="Categoria">
+                </div>
+                <div class="col">
+                    <input type="number" id="preco" class="form-control mb-2" placeholder="Preço">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <input type="number" id="quantidade" class="form-control mb-2" placeholder="Quantidade">
+                </div>
+                <div class="col">
+                    <input type="text" id="fornecedor" class="form-control mb-2" placeholder="Fornecedor">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <input type="date" id="data_validade" class="form-control mb-2" placeholder="Data de Validade">
+                </div>
+                <div class="col">
+                    <input type="date" id="data_cadastro" class="form-control mb-2" placeholder="Data de Cadastro">
+                </div>
+            </div>
+        </div>
+        <div class="text-center mb-4">
+            <button id="enviar" class="btn btn-primary mr-2">Enviar</button>
+            <button id="imprimir" class="btn btn-secondary">Imprimir</button>
+        </div>
+        <div class="box_historico_dados p-4 bg-white rounded shadow-sm">
+            <div class="historico">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome do Produto/Medicamento</th>
+                            <th>Código de Barras</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                            <th>Quantidade</th>
+                            <th>Fornecedor</th>
+                            <th>Data de Validade</th>
+                            <th>Data de Cadastro</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="historico_corpo" class="historico_corpo" style="color: white;">
+                        <!-- Dados do histórico serão inseridos aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-center mb-4">
+            <input type="date" id="data_filtro" class="form-control mb-2" placeholder="Filtrar por data">
+            <button id="pesquisar" class="btn btn-info">Pesquisar</button>
+        </div>
+    </div>
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        <div id="total_valor"></div>
+        <div id="diferenca_valor"></div>
+    </footer>
+
+    <div id="caixaModal" class="caixa-modal">
+        <div class="header-full">
+            <div style="width: 100%; ">
+                <button style="color: white; background-color: red; margin-inline-start: 10px;" onclick="fecharCaixa()">voltar</button>
+            </div>
+            <h1>caixa online</h1>
+            <div class="container mt-5" style="display: flex;">
+                <div class="caixa_estoque">
+                    <div>
+                        <h1>Pesquisar Produto</h1>
+                        <input type="text" id="product-name" placeholder="Nome do Produto">
+                        <input type="text" class="quantidade_venda" id="quantidade_venda" placeholder="Quantidade">
+                        <button onclick="searchProduct()">Procurar</button>
+                    </div>
+                    <div class="payment-section mb-4" style="margin-top: 20px;">
+                        <h3>Forma de Pagamento</h3>
+                        <select id="payment-method" class="form-control mb-2" onchange="showInstallments()">
+                            <option value="pix">Pix</option>
+                            <option value="debito">Débito</option>
+                            <option value="credito">Crédito</option>
+                            <option value="dinheiro">Dinheiro</option>
+                        </select>
+                        <div id="installments-section" style="display: none;">
+                            <input type="number" id="installments" class="form-control mb-2" placeholder="Número de Parcelas">
+                        </div>
+                        <input type="number" id="amount-paid" class="form-control mb-2" placeholder="Valor Pago">
+                        <button class="btn btn-primary" style="background-color: red; color: white;" onclick="calculateChange()">Calcular Troco</button>
+                    </div>
+                </div>
+                <div id="main-content" class="main-full">
+                    <div class="card">
+                        <h1 style="color: white;">valor total :</h1>
+                        <div class="card-body">
+                            <div id="result" class="result-box"></div>
+                        </div>
+                        <div style="width: 100%; background-color: rgba(236, 8, 8, 0.726); color: rgb(255, 255, 255); text-align: center; margin-top: 10px;">
+                            <h1>Resultado da Pesquisa</h1>
+                        </div>
+                    </div>
+                    <div class="historico-3" style="max-height: 300px; overflow-y: auto;">
+                        <!-- As new entries are appended here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js.js"></script>
+    <script>
+        let historyData = JSON.parse(localStorage.getItem('historyData')) || [];
+        let totalValue = 0;
+
+        document.getElementById('enviar').addEventListener('click', function() {
+            const novoProduto = document.createElement('tr');
+            novoProduto.innerHTML = `
+                <td>${document.getElementById('nome_produto').value}</td>
+                <td>${document.getElementById('codigo_barras').value}</td>
+                <td>${document.getElementById('categoria').value}</td>
+                <td>${parseFloat(document.getElementById('preco').value).toFixed(2)}</td>
+                <td>${parseInt(document.getElementById('quantidade').value)}</td>
+                <td>${document.getElementById('fornecedor').value}</td>
+                <td>${document.getElementById('data_validade').value}</td>
+                <td>${document.getElementById('data_cadastro').value}</td>
+                <td><button class="btn btn-danger excluir">Excluir</button></td>
+            `;
+
+            document.getElementById('historico_corpo').appendChild(novoProduto);
+
+            historyData.push({
+                productName: document.getElementById('nome_produto').value,
+                productValue: parseFloat(document.getElementById('preco').value),
+                productQuantity: parseInt(document.getElementById('quantidade').value)
+            });
+
+            localStorage.setItem('historyData', JSON.stringify(historyData));
+
+            document.getElementById('nome_produto').value = '';
+            document.getElementById('codigo_barras').value = '';
+            document.getElementById('categoria').value = '';
+            document.getElementById('preco').value = '';
+            document.getElementById('quantidade').value = '';
+            document.getElementById('fornecedor').value = '';
+            document.getElementById('data_validade').value = '';
+            document.getElementById('data_cadastro').value = '';
+
+            salvarHistorico();
+            calcularTotal();
+            atualizarCorHistorico();
+
+            novoProduto.querySelector('.excluir').addEventListener('click', function() {
+                novoProduto.remove();
+                salvarHistorico();
+                calcularTotal();
+                atualizarCorHistorico();
+            });
+        });
+
+        document.getElementById('imprimir').addEventListener('click', function() {
+            window.print();
+        });
+
+        document.getElementById('pesquisar').addEventListener('click', function() {
+            const dataFiltro = document.getElementById('data_filtro').value;
+            filtrarPorData(dataFiltro);
+        });
+
+        function salvarHistorico() {
+            const historicoDiv = document.getElementById('historico_corpo');
+            localStorage.setItem('historico', historicoDiv.innerHTML);
+        }
+
+        function carregarHistorico() {
+            const historicoDiv = document.getElementById('historico_corpo');
+            historicoDiv.innerHTML = localStorage.getItem('historico') || '';
+
+            const botoesExcluir = historicoDiv.querySelectorAll('.excluir');
+            botoesExcluir.forEach(botao => {
+                botao.addEventListener('click', function() {
+                    botao.parentElement.parentElement.remove();
+                    salvarHistorico();
+                    calcularTotal();
+                    atualizarCorHistorico();
+                });
+            });
+            atualizarCorHistorico();
+        }
+
+        function filtrarPorData(dataFiltro) {
+            const historicoDiv = document.getElementById('historico_corpo');
+            const pedidos = historicoDiv.getElementsByTagName('tr');
+            for (let pedido of pedidos) {
+                const dataPedido = pedido.cells[7].innerText;
+                if (dataPedido === dataFiltro || dataFiltro === '') {
+                    pedido.style.display = '';
+                } else {
+                    pedido.style.display = 'none';
+                }
+            }
+        }
+
+        function calcularTotal() {
+            let valorTotal = 0;
+            let valorPagoTotal = 0;
+
+            const pedidos = document.getElementById('historico_corpo').getElementsByTagName('tr');
+            for (let pedido of pedidos) {
+                const preco = parseFloat(pedido.cells[3].innerText);
+                const quantidade = parseInt(pedido.cells[4].innerText);
+
+                valorTotal += preco * quantidade;
+            }
+
+            document.getElementById('total_valor').innerText = 'Total: R$ ' + valorTotal.toFixed(2);
+            document.getElementById('diferenca_valor').innerText = 'Diferença: R$ ' + valorPagoTotal.toFixed(2);
+        }
+
+        function atualizarCorHistorico() {
+            const pedidos = document.getElementById('historico_corpo').getElementsByTagName('tr');
+            for (let pedido of pedidos) {
+                const preco = parseFloat(pedido.cells[3].innerText);
+                const quantidade = parseInt(pedido.cells[4].innerText);
+
+                const valorItem = preco * quantidade;
+
+                if (valorItem > 0) {
+                    pedido.style.backgroundColor = 'darkgreen';
+                } else if (valorItem < 0) {
+                    pedido.style.backgroundColor = 'darkred';
+                } else if (valorItem === 0) {
+                    pedido.style.backgroundColor = 'black';
+                }
+            }
+        }
+
+        function abrirCaixa() {
+            document.getElementById('caixaModal').style.display = 'block';
+            document.getElementById('caixaModal').style.width = '150%';
+            document.getElementById('caixaModal').style.height = '100vh';
+        }
+
+        function fecharCaixa() {
+            document.getElementById('caixaModal').style.display = 'none';
+        }
+
+        function calcularTroco() {
+            const valorPago = parseFloat(document.getElementById('valor_pago_caixa').value);
+            const quantidadeItens = parseInt(document.getElementById('quantidade_itens').value);
+            const valorItem = parseFloat(document.getElementById('produto_info').dataset.valorItem);
+            const totalCompra = quantidadeItens * valorItem;
+
+            const troco = valorPago - totalCompra;
+            document.getElementById('troco').value = troco.toFixed(2);
+        }
+
+        document.getElementById('buscar_produto_btn').addEventListener('click', function() {
+            const busca = document.getElementById('buscar_produto').value.toLowerCase();
+            const produtoInfoDiv = document.getElementById('produto_info');
+
+            const historicoDiv = document.getElementById('historico_corpo');
+            const pedidos = historicoDiv.getElementsByTagName('tr');
+            for (let pedido of pedidos) {
+                const nomeProduto = pedido.cells[0].innerText.toLowerCase();
+                if (nomeProduto.includes(busca)) {
+                    const codigoBarras = pedido.cells[1].innerText;
+                    const categoria = pedido.cells[2].innerText;
+                    const preco = parseFloat(pedido.cells[3].innerText);
+                    const quantidade = pedido.cells[4].innerText;
+                    const fornecedor = pedido.cells[5].innerText;
+                    const dataValidade = pedido.cells[6].innerText;
+                    const dataCadastro = pedido.cells[7].innerText;
+
+                    produtoInfoDiv.innerHTML = `
+                        <p>Nome: ${nomeProduto}</p>
+                        <p>Código de Barras: ${codigoBarras}</p>
+                        <p>Categoria: ${categoria}</p>
+                        <p>Preço: R$ ${preco.toFixed(2)}</p>
+                        <p>Quantidade Disponível: ${quantidade}</p>
+                        <p>Fornecedor: ${fornecedor}</p>
+                        <p>Data de Validade: ${dataValidade}</p>
+                        <p>Data de Cadastro: ${dataCadastro}</p>
+                    `;
+                    produtoInfoDiv.dataset.valorItem = preco;
+                    produtoInfoDiv.classList.remove('produto-nao-cadastrado');
+                    return;
+                }
+            }
+
+            produtoInfoDiv.innerHTML = '<p>Produto não cadastrado</p>';
+            produtoInfoDiv.classList.add('produto-nao-cadastrado');
+            delete produtoInfoDiv.dataset.valorItem;
+        });
+
+        function searchProduct() {
+            const productName = document.getElementById('product-name').value.toLowerCase();
+            let productQuantity = parseInt(document.getElementById('quantidade_venda').value);
+
+            if (!productName) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+
+            if (isNaN(productQuantity) || productQuantity <= 0) {
+                productQuantity = 1;
+            }
+
+            const foundProduct = historyData.find(item => item.productName.toLowerCase() === productName);
+
+            if (foundProduct) {
+                const productTotal = foundProduct.productValue * productQuantity;
+                addToHistory(foundProduct.productName, productTotal, foundProduct.productValue);
+                totalValue += productTotal;
+                updateTotalValue(totalValue);
+            } else {
+                alert('Produto não encontrado!');
+            }
+        }
+
+        function addToHistory(productName, total, productValue) {
+            const searchResultHtml = `
+                <div class="result-content">
+                    <p>Produto: ${productName}</p>
+                    <p>Valor do Item: ${productValue.toFixed(2)}</p>
+                    <p>Total da Multiplicação: ${total.toFixed(2)}</p>
+                    <button class="btn_excluir" onclick="deleteEntry(this, ${total})">Excluir</button>
+                </div>
+            `;
+
+            const newEntryDiv = document.createElement('div');
+            newEntryDiv.classList.add('historico-entry');
+            newEntryDiv.innerHTML = searchResultHtml;
+            document.querySelector('.historico-3').appendChild(newEntryDiv);
+
+            checkNavigationBar();
+        }
+
+        function calculateChange() {
+            const amountPaid = parseFloat(document.getElementById('amount-paid').value);
+            const change = amountPaid - totalValue;
+
+            if (isNaN(amountPaid)) {
+                alert('Preencha o valor pago!');
+                return;
+            }
+
+            const resultBox = document.getElementById('result');
+            resultBox.innerHTML = `<div class="result-content"><p>Troco: ${change.toFixed(2)}</p></div>`;
+
+            if (change < 0) {
+                resultBox.style.backgroundColor = 'red';
+                resultBox.style.color = 'white';
+            } else if (change === 0) {
+                resultBox.style.backgroundColor = 'blue';
+                resultBox.style.color = 'white';
+            } else {
+                resultBox.style.backgroundColor = 'white';
+                resultBox.style.color = 'black';
+            }
+        }
+
+        function deleteEntry(button, total) {
+            const entryDiv = button.closest('.historico-entry');
+            entryDiv.remove();
+            totalValue -= total;
+            updateTotalValue(totalValue);
+        }
+
+        function checkNavigationBar() {
+            const historyDiv = document.querySelector('.historico-3');
+            const entries = historyDiv.getElementsByClassName('historico-entry');
+            if (entries.length > 3) {
+                historyDiv.style.maxHeight = '300px';
+                historyDiv.style.overflowY = 'auto';
+            } else {
+                historyDiv.style.maxHeight = '';
+                historyDiv.style.overflowY = '';
+            }
+        }
+
+        function updateTotalValue(totalValue) {
+            const totalHtml = `
+                <div class="result-content">
+                    <p>Valor Total Acumulado: ${totalValue.toFixed(2)}</p>
+                </div>
+            `;
+            document.getElementById('result').innerHTML = totalHtml;
+        }
+
+        function showInstallments() {
+            const paymentMethod = document.getElementById('payment-method').value;
+            const installmentsSection = document.getElementById('installments-section');
+            if (paymentMethod === 'credito') {
+                installmentsSection.style.display = 'block';
+            } else {
+                installmentsSection.style.display = 'none';
+                document.getElementById('installments').value = '';
+            }
+        }
+
+        carregarHistorico();
+    </script>
+</body>
+</html>

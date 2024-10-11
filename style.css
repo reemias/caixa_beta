@@ -1,0 +1,170 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #2c3e50, #4ca1af);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    background-color: #2c3e50;
+    color: white;
+    height: 80px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #2c3e50, #4ca1af);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    background-color: #2c3e50;
+    color: white;
+    height: 80px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cadastro_cliente, .box_produto {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+.box_historico_dados {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    width: 100%;
+    color: white;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #0d1a27;
+    color: white;
+    width: 100%;
+    bottom: 0;
+}
+
+.vermelho {
+    background-color: #ffcccc;
+}
+
+.azul {
+    background-color: #cce5ff;
+}
+
+.verde {
+    background-color: #d4edda;
+}
+
+.historico_corpo {
+    background-color: #030303;
+    color: white;
+}
+
+/* Ocultar cabeçalhos em telas menores */
+@media (max-width: 550px) {
+    .box_historico_dados thead {
+        display: none; /* Esconde os cabeçalhos */
+    }
+
+    .box_historico_dados tbody tr {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ccc; /* Adiciona borda para melhor visualização */
+        margin-bottom: 10px;
+    }
+
+    .box_historico_dados tbody tr td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+    }
+
+    .box_historico_dados tbody tr td::before {
+        content: attr(data-title);
+        flex: 1;
+        font-weight: bold;
+        padding-right: 10px; /* Adiciona espaço entre título e valor */
+    }
+}
+
+.caixa-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.caixa-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.produto-info {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.produto-nao-cadastrado {
+    color: red;
+}
+
